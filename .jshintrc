@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "jQuery"   : true,
+    "console"  : true,
+    "module"   : true,
+    "document" : true
+  },
+  "undef"  : true,
+  "unused" : true,
+  "predef" : ["$"],
+  "eqeqeq" : true
+}
