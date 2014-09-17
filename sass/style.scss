@@ -6,11 +6,18 @@ html, body {
 }
 
 .layout-header {
-
+	background: #ddd;
+	height: 100px;
 }
 
 .layout-body {
-
+	@include clearfix;
+	.layout-side-left {
+		float: left;
+	}
+	.layout-side-right {
+		float: right;
+	}
 }
 
 .layout-footer {
