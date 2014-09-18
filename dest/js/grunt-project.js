@@ -2263,7 +2263,8 @@ $(function() {
 
 	init();
 });
-;/* global $ */
+
+/* global $ */
 $(function () {
 	var a, b;
 	var fn = function () {
