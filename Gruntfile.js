@@ -12,8 +12,8 @@ module.exports = function(grunt) {
             },
             dest: {
                 sassDir : 'sass/',
-                cssDir  : 'dest/css/',
-                jsDir   : 'dest/js/'
+                cssDir  : 'dist/css/',
+                jsDir   : 'dist/js/'
             }
         },
         compass: {
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
             dest: {
                 options: {
                     sassDir     : 'sass',
-                    cssDir      : 'dest/css',
+                    cssDir      : 'dist/css',
                     environment : 'production',
                     outputStyle : 'compressed'
                 }
@@ -120,6 +120,12 @@ module.exports = function(grunt) {
                 }
             }
         },
+        imagemin: {
+            options: {
+                optimizationLevel: 3
+            },
+            files: {'images/ico_extra_info.png': 'dist/images/ico_extra_info.png'}
+        },
         // watch: {
         //     files: ['<%= jshint.files %>', 'assets/scss/**/*.scss'],
         //     tasks: ['concat', 'uglify', 'jshint', 'compass']
@@ -139,6 +145,19 @@ module.exports = function(grunt) {
                     spawn: false
                 }
             }
+        },
+        'ftp-deploy': {
+            build: {
+                auth: {
+                    host: '54.249.134.139',
+                    //port: 21,
+                    authKey: 'key1'
+                    //authPath: '.ftpconfig'
+                },
+                src: 'js',
+                dest: 'hf/js/buy/aa',
+                //exclusions: ['path/to/source/folder/**/.DS_Store', 'path/to/source/folder/**/Thumbs.db', 'path/to/dist/tmp']
+            }
         }
     });
 
@@ -148,7 +167,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-ftp-deploy');
 
     grunt.registerTask('default', ['sass:dest', 'cssmin', 'jshint', 'concat', 'uglify']);
     grunt.registerTask('dev', ['jshint', 'sass:dev']);
