@@ -72,6 +72,9 @@ module.exports = function(grunt) {
                     dest: 'dist/css',
                     ext: '.css'
                 }]
+            },
+            compile: {
+
             }
         },
         cssmin: {
@@ -99,6 +102,21 @@ module.exports = function(grunt) {
             // options: {
             //   jshintrc: '.jshintrc'
             // }
+        },
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: 'js',
+                    //mainConfigFile: "path/to/config.js",
+                    //name: 'almond', // assumes a production build using almond
+                    paths: {
+                        'd': 'detail',
+                        'm': 'me'
+                    },
+                    include: ['d', 'me'],
+                    out: 'dist/js/combo.js'
+                }
+            }
         },
         concat: {
             // options: {
@@ -168,6 +186,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
@@ -177,4 +196,24 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['sass:dest', 'cssmin', 'jshint', 'concat', 'uglify']);
     grunt.registerTask('dev', ['newer:jshint', 'newer:sass:dev']);
+
+    grunt.task.registerTask('compile', 'Compile scss to css.', function(file) {
+        if (arguments.length === 0) {
+            grunt.log.writeln(this.name + ", no args");
+        } else {
+            grunt.log.writeln(this.name + ", " + file);
+            grunt.config('sass:compile', {
+                options: {
+                    compass   : true,
+                    style     : 'expanded',
+                    sourcemap : 'none'
+                },
+                files: {
+                    'sass/<%= file %>.css' : 'css/<%= file %>.scss'
+                }
+            });
+            grunt.task.run('sass:dev');
+
+        }
+    });
 };
