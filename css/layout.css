@@ -18,3 +18,9 @@ html, body {
 .layout-body .layout-side-right {
   float: right;
 }
+
+.layout-footer {
+  background: #ddd;
+  margin: 0;
+  padding: 0;
+}

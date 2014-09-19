@@ -43,17 +43,17 @@ module.exports = function(grunt) {
                     style     : 'expanded',
                     sourcemap : 'none'
                 },
-                files: {
-                    '<%= setting.dev.cssDir %>/layout.css' : '<%= setting.dev.sassDir %>/layout.scss',
-                    '<%= setting.dev.cssDir %>/m-button.css' : '<%= setting.dev.sassDir %>/m-button.scss'
-                }
-                // files: [{
-                //     expand: true,
-                //     cwd: 'styles',
-                //     src: ['sass/*.scss'],
-                //     dest: 'css',
-                //     ext: '.css'
-                // }]
+                // files: {
+                //     '<%= setting.dev.cssDir %>/layout.css' : '<%= setting.dev.sassDir %>/layout.scss',
+                //     '<%= setting.dev.cssDir %>/m-button.css' : '<%= setting.dev.sassDir %>/m-button.scss'
+                // }
+                files: [{
+                    expand: true,
+                    cwd: 'sass',
+                    src: ['*.scss'],
+                    dest: 'css',
+                    ext: '.css'
+                }]
             },
             dest: {
                 options: {
@@ -61,10 +61,17 @@ module.exports = function(grunt) {
                     style     : 'compressed',
                     sourcemap : 'none'
                 },
-                files: {
-                    '<%= setting.dest.cssDir %>/layout.css' : '<%= setting.dest.sassDir %>/layout.scss',
-                    '<%= setting.dest.cssDir %>/m-button.css' : '<%= setting.dest.sassDir %>/m-button.scss'
-                }
+                // files: {
+                //     '<%= setting.dest.cssDir %>/layout.css' : '<%= setting.dest.sassDir %>/layout.scss',
+                //     '<%= setting.dest.cssDir %>/m-button.css' : '<%= setting.dest.sassDir %>/m-button.scss'
+                // }
+                files: [{
+                    expand: true,
+                    cwd: 'sass',
+                    src: ['*.scss'],
+                    dest: 'dist/css',
+                    ext: '.css'
+                }]
             }
         },
         cssmin: {
@@ -126,21 +133,17 @@ module.exports = function(grunt) {
             },
             files: {'images/ico_extra_info.png': 'dist/images/ico_extra_info.png'}
         },
-        // watch: {
-        //     files: ['<%= jshint.files %>', 'assets/scss/**/*.scss'],
-        //     tasks: ['concat', 'uglify', 'jshint', 'compass']
-        // }
         watch: {
             css: {
                 files: ['sass/*.scss'],
-                tasks: ['sass:dev'],
+                tasks: ['newer:sass:dev'],
                 options: {
                     spawn: false
                 }
             },
             js: {
                 files: ['js/*.js'],
-                tasks: ['jshint'],
+                tasks: ['newer:jshint'],
                 options: {
                     spawn: false
                 }
@@ -168,9 +171,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-newer');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ftp-deploy');
 
     grunt.registerTask('default', ['sass:dest', 'cssmin', 'jshint', 'concat', 'uglify']);
-    grunt.registerTask('dev', ['jshint', 'sass:dev']);
+    grunt.registerTask('dev', ['newer:jshint', 'newer:sass:dev']);
 };
